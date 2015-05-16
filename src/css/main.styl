@@ -1,0 +1,36 @@
+$sort-item-width = 150px;
+$sort-item-height = 150px;
+$sort-item-padding = 10px;
+$sort-item-content-border = 1px;
+
+.sort{
+	border: 1px solid #DAE1E8;
+	width: 600px;
+	margin: 50px auto;
+
+	&:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+
+	&__item,
+	&__placeholder{
+		float: left;
+		width:  $sort-item-width;
+		height: $sort-item-height;
+		position: relative;
+		box-sizing: border-box;
+		padding: $sort-item-padding;
+	}
+
+	&__item-content{
+		border: $sort-item-content-border solid #ccc;
+		width:  $sort-item-width - ($sort-item-padding * 2) - $sort-item-content-border;
+		height: $sort-item-height - ($sort-item-padding * 2) - $sort-item-content-border;
+
+		background-repeat: no-repeat;
+  		background-position: center;
+  		background-size: cover;
+	}
+}
