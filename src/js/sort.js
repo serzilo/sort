@@ -4,9 +4,15 @@
 
 		this.defaults = {
 			'sortItem' : '.sort__item',
+			'placeholderClass' : 'sort__placeholder',
 			'startCallback' : function(){},
 			'moveCallback'  : function(){},
 			'stopCallback'  : function(){}
+		};
+
+		this.cursorOffset = {
+			'top'  : 0,
+			'left' : 0
 		};
 
 		$.extend(this.defaults, options);
@@ -44,25 +50,58 @@
 			});
 		},
 		_mouseDown: function(e, el){
-			var self = this;
+			var self = this,
+				placeholder = $('<div class="' + self.defaults.placeholderClass + '"></div>'),
+				styles = {
+					'position' : 'absolute', 
+					'z-index' : 1000,
+					'top' : el.position().top + 'px',
+					'left' : el.position().left + 'px'
+				};
 
-			//console.log(el);
+			el.after(placeholder).prependTo(document.body).css(styles);
+
+			// console.log(e);
+
+			self.cursorOffset = {
+				'top'  : e.offsetY,
+				'left' : e.offsetX
+			};
 
 			self.defaults.startCallback();
 		},
 		_mouseMove: function(e, el){
-			var self = this;
+			var self = this,
+				styles = {
+					'left' : (e.pageX - self.cursorOffset.left) + 'px',
+					'top'  : (e.pageY - self.cursorOffset.top) + 'px'
+				};
 
-			//console.log(el);
+			el.css(styles);
 
 			self.defaults.moveCallback();
 		},
 		_mouseUp: function(e, el){
-			var self = this;
+			var self = this,
+				placeholder = self.el.find('.' + self.defaults.placeholderClass),
+				placeholderPosition = placeholder.position(),
+				styles = {
+					'top'  : placeholderPosition.top + 'px',
+					'left' : placeholderPosition.left + 'px'
+				};
 
-			//console.log(el);
+			el.animate(styles, 200, 'linear', function(){
+				el.removeAttr('style');
 
-			self.defaults.stopCallback();
+				placeholder.after(el).remove();
+
+				self.cursorOffset = {
+					'top'  : 0,
+					'left' : 0
+				};
+
+				self.defaults.stopCallback();
+			});
 		}
 	});
 
