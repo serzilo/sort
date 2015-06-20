@@ -2,6 +2,7 @@ $sort-item-width = 150px;
 $sort-item-height = 150px;
 $sort-item-padding = 10px;
 $sort-item-content-border = 1px;
+$sort-item-duration = 0.2s;
 
 .sort{
 	border: 1px solid #DAE1E8;
@@ -23,6 +24,14 @@ $sort-item-content-border = 1px;
 		box-sizing: border-box;
 		padding: $sort-item-padding;
 	}
+
+	&__item_animate{
+		-webkit-transition: all $sort-item-duration ease;
+		-moz-transition: all $sort-item-duration ease;
+		-o-transition: all $sort-item-duration ease;
+		transition: all $sort-item-duration ease;
+	}
+
 
 	&__placeholder{
 		background: red;
