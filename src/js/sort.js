@@ -109,8 +109,9 @@
 		_changePosition: function(e, el){
 			var self = this,
 				position = el.position(),
-				items = this.el.find(self.defaults.sortItem),
-				itemsLength = items.length;
+				items = self.el.find(self.defaults.sortItem + ', .'+self.defaults.placeholderClass),
+				itemsLength = items.length,
+				positionChanged = false;
 
 			for (var i = 0; i < itemsLength; i++){
 				var item = $(items[i]),
@@ -120,10 +121,39 @@
 
 				if ( ((position.left < itemPosition.left) && (position.left + itemWudth > itemPosition.left)) &&
 					((position.top > itemPosition.top) && (position.top < itemHeight + itemPosition.top)) ){
+
+					if (item.hasClass(self.defaults.placeholderClass)){
+						positionChanged = true;
+						return;
+					}
+
 					self._swap(self.el.find('.'+self.defaults.placeholderClass), item);
+					positionChanged = true;
 					return;
 				}
 			}
+
+			if (positionChanged === false){
+				var nearElementSaved = null,
+					nearElementDistanceSaved = 0;
+
+				for (var j = 0; j < itemsLength; j++){
+					var nearElement = $(items[j]),
+						nearElementPosition = nearElement.position(),
+						nearElementDistance = Math.sqrt(Math.pow(nearElementPosition.left - e.pageX, 2) + Math.pow(nearElementPosition.top - e.pageY, 2));
+
+					if ((j == 0) || (nearElementDistanceSaved > nearElementDistance)){
+						nearElementSaved = nearElement;
+						nearElementDistanceSaved = nearElementDistance
+					}
+				}
+
+				if (!nearElementSaved.hasClass(self.defaults.placeholderClass)) {
+					self._swap(self.el.find('.'+self.defaults.placeholderClass), nearElementSaved);
+					positionChanged = true;
+				};
+			}
+
 		},
 		_swap: function(el1, el2){
 			var el1_0 = el1[0],
