@@ -5,6 +5,8 @@
 		this.defaults = {
 			'sortItem' : '.sort__item',
 			'placeholderClass' : 'sort__placeholder',
+			'classOnMoveItem' : '',
+			'correction' : 0,
 			'startCallback' : function(){},
 			'moveCallback'  : function(){},
 			'stopCallback'  : function(){}
@@ -51,13 +53,14 @@
 			var self = this,
 				placeholder = $('<div class="' + self.defaults.placeholderClass + '"></div>'),
 				styles = {
+					'width' : el.outerWidth() + 'px',
 					'position' : 'absolute', 
 					'z-index' : 1000,
 					'top' : el.position().top + 'px',
 					'left' : el.position().left + 'px'
 				};
 
-			el.after(placeholder).prependTo(document.body).css(styles);
+			el.after(placeholder).prependTo(document.body).css(styles).addClass(self.defaults.classOnMoveItem);
 
 			self.cursorOffset = {
 				'top'  : e.offsetY,
@@ -89,7 +92,7 @@
 				};
 
 			function restoreEl(){
-				el.removeAttr('style');
+				el.removeAttr('style').removeClass(self.defaults.classOnMoveItem)
 
 				placeholder.after(el).remove();
 
@@ -109,7 +112,6 @@
 				} ,0);
 
 				el.one(Sort.transition, function(){
-					console.log(Sort.transition);
 					el.removeClass('sort__item_animate');
 					restoreEl();
 				});
@@ -122,8 +124,7 @@
 				position = el.position(),
 				items = self.el.find(self.defaults.sortItem + ', .'+self.defaults.placeholderClass),
 				itemsLength = items.length,
-				positionChanged = false,
-				correction = 20;
+				positionChanged = false;
 
 			for (var i = 0; i < itemsLength; i++){
 				var item = $(items[i]),
@@ -131,8 +132,8 @@
 					itemWudth = item.width(),
 					itemPosition = item.position();
 
-				if ( ((position.left < itemPosition.left) && (position.left + itemWudth + correction > itemPosition.left)) &&
-					((position.top > itemPosition.top) && (position.top < itemHeight + correction + itemPosition.top)) ){
+				if ( ((position.left < itemPosition.left) && (position.left + itemWudth + self.correction > itemPosition.left)) &&
+					((position.top > itemPosition.top) && (position.top < itemHeight + self.correction + itemPosition.top)) ){
 
 					if (!item.hasClass(self.defaults.placeholderClass)){
 						self._swap(self.el.find('.'+self.defaults.placeholderClass), item);
@@ -206,7 +207,9 @@
 	});
 
 	$.fn.sort = function(options){
-		Sort.transition();
+		if (typeof Sort.transition == 'function'){
+			Sort.transition();
+		}
 
 		return this.each(function(){
 			new Sort(this, options);

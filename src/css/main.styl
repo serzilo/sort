@@ -4,10 +4,18 @@ $sort-item-padding = 10px;
 $sort-item-content-border = 1px;
 $sort-item-duration = 0.2s;
 
+border-radius(){
+	border-radius arguments;
+}
+
 .sort{
 	border: 1px solid #DAE1E8;
 	width: 600px;
 	margin: 50px auto;
+
+	&_col{
+		border: 0;
+	}
 
 	&:after{
 		content: '';
@@ -23,6 +31,11 @@ $sort-item-duration = 0.2s;
 		position: relative;
 		box-sizing: border-box;
 		padding: $sort-item-padding;
+
+		&_move{
+			box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+			background: #fff;
+		}
 	}
 
 	&__item_animate{
@@ -45,9 +58,7 @@ $sort-item-duration = 0.2s;
 			bottom: $sort-item-padding;
 			left: $sort-item-padding;
 			background: #bdd3fd;
-			-webkit-border-radius: 5px;
-			   -moz-border-radius: 5px;
-			        border-radius: 5px;
+			border-radius(5px)
 
 		}
 	}
@@ -61,5 +72,24 @@ $sort-item-duration = 0.2s;
 		background-repeat: no-repeat;
   		background-position: center;
   		background-size: cover;
+	}
+
+
+
+
+	&__full-item,
+	&__full-item_placeholder{
+		height: 40px;
+		background: #2b55a9;
+		border-radius(5px)
+		margin-bottom: 15px;
+	}
+
+	&__full-item_placeholder{
+		background: #fbfdbd;
+	}
+
+	&__full-item_move{
+		box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
 	}
 }
