@@ -59,8 +59,6 @@
 
 			el.after(placeholder).prependTo(document.body).css(styles);
 
-			// console.log(e);
-
 			self.cursorOffset = {
 				'top'  : e.offsetY,
 				'left' : e.offsetX
@@ -89,21 +87,6 @@
 					'top'  : placeholderPosition.top + 'px',
 					'left' : placeholderPosition.left + 'px'
 				};
-
-			/*
-			el.animate(styles, 200, 'linear', function(){
-				el.removeAttr('style');
-
-				placeholder.after(el).remove();
-
-				self.cursorOffset = {
-					'top'  : 0,
-					'left' : 0
-				};
-
-				self.defaults.stopCallback();
-			});
-			*/
 
 			function restoreEl(){
 				el.removeAttr('style');
@@ -193,18 +176,8 @@
 				left = el2_0_position.left - el1_0_position.left,
 				top  = el2_0_position.top - el1_0_position.top;
 
-			// console.log(el1_0_position);
-			// console.log(el2_0_position);
-
 			el1_0.parentNode.replaceChild(el2_c, el1_0);
 			el2_0.parentNode.replaceChild(el1_c, el2_0);
-
-			/*
-			$(el2_c).css('transform', 'translate(' + left + 'px, ' + top + 'px)')
-					.animate({'transform' : 'translate(0px, 0px)'}, 200, 'linear', function(){
-
-					});
-			*/
 		}
 	});
 

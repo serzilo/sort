@@ -27,16 +27,31 @@ $sort-item-duration = 0.2s;
 
 	&__item_animate{
 		-webkit-transition: all $sort-item-duration linear;
-		-moz-transition: all $sort-item-duration linear;
-		-o-transition: all $sort-item-duration linear;
-		transition: all $sort-item-duration linear;
+		   -moz-transition: all $sort-item-duration linear;
+		     -o-transition: all $sort-item-duration linear;
+		        transition: all $sort-item-duration linear;
 	}
 
-
+	
 	&__placeholder{
-		background: red;
+		position: relative;
 
+		&:before{
+			content: '';
+			position: absolute;	
+			display: block;
+			top: $sort-item-padding;
+			right: $sort-item-padding;
+			bottom: $sort-item-padding;
+			left: $sort-item-padding;
+			background: #bdd3fd;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+			        border-radius: 5px;
+
+		}
 	}
+
 
 	&__item-content{
 		border: $sort-item-content-border solid #ccc;
