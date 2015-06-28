@@ -17,8 +17,6 @@
 
 		$.extend(this.defaults, options);
 
-		console.dir(this);
-
 		this._init();
 	}
 
@@ -111,7 +109,8 @@
 				position = el.position(),
 				items = self.el.find(self.defaults.sortItem + ', .'+self.defaults.placeholderClass),
 				itemsLength = items.length,
-				positionChanged = false;
+				positionChanged = false,
+				correction = 20;
 
 			for (var i = 0; i < itemsLength; i++){
 				var item = $(items[i]),
@@ -119,15 +118,13 @@
 					itemWudth = item.width(),
 					itemPosition = item.position();
 
-				if ( ((position.left < itemPosition.left) && (position.left + itemWudth > itemPosition.left)) &&
-					((position.top > itemPosition.top) && (position.top < itemHeight + itemPosition.top)) ){
+				if ( ((position.left < itemPosition.left) && (position.left + itemWudth + correction > itemPosition.left)) &&
+					((position.top > itemPosition.top) && (position.top < itemHeight + correction + itemPosition.top)) ){
 
-					if (item.hasClass(self.defaults.placeholderClass)){
-						positionChanged = true;
-						return;
+					if (!item.hasClass(self.defaults.placeholderClass)){
+						self._swap(self.el.find('.'+self.defaults.placeholderClass), item);
 					}
 
-					self._swap(self.el.find('.'+self.defaults.placeholderClass), item);
 					positionChanged = true;
 					return;
 				}
@@ -150,8 +147,9 @@
 
 				if (!nearElementSaved.hasClass(self.defaults.placeholderClass)) {
 					self._swap(self.el.find('.'+self.defaults.placeholderClass), nearElementSaved);
-					positionChanged = true;
 				};
+
+				positionChanged = true;
 			}
 
 		},
