@@ -90,6 +90,7 @@
 					'left' : placeholderPosition.left + 'px'
 				};
 
+			/*
 			el.animate(styles, 200, 'linear', function(){
 				el.removeAttr('style');
 
@@ -102,7 +103,36 @@
 
 				self.defaults.stopCallback();
 			});
+			*/
 
+			function restoreEl(){
+				el.removeAttr('style');
+
+				placeholder.after(el).remove();
+
+				self.cursorOffset = {
+					'top'  : 0,
+					'left' : 0
+				};
+
+				self.defaults.stopCallback();
+			}
+
+			if (Sort.transition !== false){
+				el.addClass('sort__item_animate');
+
+				setTimeout(function(){
+					el.css(styles);
+				} ,0);
+
+				el.one(Sort.transition, function(){
+					console.log(Sort.transition);
+					el.removeClass('sort__item_animate');
+					restoreEl();
+				});
+			} else {
+				restoreEl();
+			}
 		},
 		_changePosition: function(e, el){
 			var self = this,
